@@ -23,10 +23,6 @@ def extract_post_info(data):
         "upvote_ratio": data.get("upvote_ratio", 0.0),
         "utc": datetime.fromtimestamp(data.get("created_utc", 0.0), timezone.utc).isoformat()
     }
-
-    # Add toxicity analysis
-    post["toxicity"] = analyze_toxicity(post["title"] + " " + post["selftext"])
-
     return post
 
 

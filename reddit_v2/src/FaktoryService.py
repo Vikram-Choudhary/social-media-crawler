@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 from FetchPostsJob import get_reddit_posts
 from MongoService import insert_to_mongodb
 from FetchCommentsJob import fetch_and_process_comments
+from backfill_toxicity_reddit import backfill_toxicity_analysis
 from logger_setup import setup_logger
 
 # Setup logger
@@ -33,7 +34,7 @@ def handle_fetch_posts(arg=[]):
     consumer handler for fetch-posts queue
     """
     subreddits = get_subreddits_from_file()
-    delay = 70
+    delay = 240
     for subreddit in subreddits:
         try:
             posts = get_reddit_posts(subreddit)
@@ -43,10 +44,11 @@ def handle_fetch_posts(arg=[]):
             for post in posts:
                 postids.append(post.get("_id"))
             produce_faktory_job("handle_fetch_comments", "fetch-comments", delay, postids)
-            delay = delay + 200                            
+            delay = delay + 180                            
         except Exception as e:
             logger.error(f"Failed to fetch posts for {subreddit}: {e}")
-    produce_faktory_job("handle_fetch_posts", "fetch-posts", 900, [])
+    produce_faktory_job("handle_fetch_posts", "fetch-posts", 1200, [])
+    backfill_toxicity_analysis()
 
 
 def handle_fetch_comments(*pids):

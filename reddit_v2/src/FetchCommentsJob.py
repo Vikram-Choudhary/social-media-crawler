@@ -23,8 +23,6 @@ def generate_comment_list(comment):
                 "parent_id": comment.get("parent_id"),
                 "utc": datetime.fromtimestamp(comment.get("created_utc", 0.0), timezone.utc).isoformat()
             }
-            # Add toxicity analysis
-            reddit_post_comment["toxicity"] = analyze_toxicity(reddit_post_comment["body"])
         except Exception as e:
             logger.error(f"Failed to extract comments for {comment}: {e}")
         comments_list.append(reddit_post_comment)
