@@ -5,3 +5,4 @@ pymongo
 requests ~= 2.32
 pandas
 matplotlib
+seaborn

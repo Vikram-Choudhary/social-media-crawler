@@ -95,7 +95,7 @@ def fetch_toxicity_data_multithreaded(db, collection_name):
         # Fetch records in batches
         last_id = None
         while True:
-            query = {}
+            query = { "toxicity": { "$exists": True } }
             if last_id:
                 query["_id"] = {"$gt": last_id}
 
