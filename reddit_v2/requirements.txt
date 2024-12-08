@@ -1,7 +1,11 @@
 ###### Requirements with Version Specifiers ######
 requests ~= 2.32
-pymongo>=3.11,<4.0
+pymongo
 pyfaktory
 pandas
 matplotlib
 TextBlob
+datetime
+logging
+psycopg2-binary ~= 2.9
+python-dotenv ~= 1.0
