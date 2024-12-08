@@ -9,6 +9,7 @@ from pymongo import MongoClient
 from pymongo.errors import BulkWriteError
 from pyfaktory import Client, Consumer, Job, Producer
 from ToxicityApiClient import analyze_toxicity
+from multiprocessing import get_context
 
 from chan_client import ChanClient
 from logger_setup import setup_logger
@@ -354,11 +355,13 @@ def main():
     """
     while True:
         try:
+            context = get_context("spawn")
             with Client(faktory_url=FAKTORY_SERVER_URL, role="consumer") as client:
                 consumer = Consumer(
                     client=client,
                     queues=["crawl-catalog", "crawl-thread"],
-                    concurrency=5
+                    concurrency=5,
+                    context=context
                 )
                 # Register job types with their corresponding functions
                 consumer.register("crawl-catalog", crawl_catalog)

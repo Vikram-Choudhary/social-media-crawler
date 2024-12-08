@@ -6,3 +6,6 @@ requests ~= 2.32
 pandas
 matplotlib
 seaborn
+datetime
+logging
+psycopg2-binary ~= 2.9
