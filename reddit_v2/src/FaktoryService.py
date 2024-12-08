@@ -6,6 +6,7 @@ from MongoService import insert_to_mongodb
 from FetchCommentsJob import fetch_and_process_comments
 from backfill_toxicity_reddit import backfill_toxicity_analysis
 from logger_setup import setup_logger
+from multiprocessing import get_context
 
 # Setup logger
 logger = setup_logger("reddit", log_file='logs/reddit.log', max_bytes=10*1024*1024, backup_count=5)
@@ -94,8 +95,9 @@ if __name__ == "__main__":
     # we want to pull jobs off the queues and execute them
     # FOREVER (continuously)
     # handle_fetch_posts(arg=[])
+    context = get_context("fork")
     with Client(faktory_url=FAKTORY_SERVER_URL, role="consumer") as client:
-        consumer = Consumer(client=client, queues=["fetch-posts", "fetch-comments"], concurrency=2)
+        consumer = Consumer(client=client, queues=["fetch-posts", "fetch-comments"], concurrency=2,context=context)
         consumer.register("handle_fetch_posts", handle_fetch_posts)
         consumer.register("handle_fetch_comments", handle_fetch_comments)
         consumer.run()
