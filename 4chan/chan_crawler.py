@@ -355,7 +355,7 @@ def main():
     """
     while True:
         try:
-            context = get_context("spawn")
+            context = get_context("fork")
             with Client(faktory_url=FAKTORY_SERVER_URL, role="consumer") as client:
                 consumer = Consumer(
                     client=client,
