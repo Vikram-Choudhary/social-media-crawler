@@ -9,3 +9,6 @@ seaborn
 datetime
 logging
 psycopg2-binary ~= 2.9
+textblob
+fastapi
+uvicorn

@@ -107,10 +107,17 @@ def fetch_and_analyze_sentiments():
         for thread in threads:
             thread.join()
 
-        # Generate bar chart
-        generate_bar_chart(sentiment_counts)
-
         logger.info("Sentiment analysis for job market completed successfully.")
+        
+        # Convert to regular dict
+        sentiment_counts = dict(sentiment_counts)
+        # Ensure we have keys for all three sentiments, even if zero
+        for s in ["positive", "neutral", "negative"]:
+            if s not in sentiment_counts:
+                sentiment_counts[s] = 0
+
+        return sentiment_counts
+
     except Exception as e:
         logger.error(f"Error during sentiment analysis: {e}")
 
@@ -136,4 +143,5 @@ def generate_bar_chart(sentiment_counts):
 # Main entry point
 if __name__ == "__main__":
     logger.info("Starting sentiment analysis for all available data")
-    fetch_and_analyze_sentiments()
+    sentiment_counts = fetch_and_analyze_sentiments()
+    generate_bar_chart(sentiment_counts)
