@@ -1,3 +1,4 @@
+import time
 from pymongo import MongoClient, errors
 from ToxicityApiClient import analyze_toxicity
 from logger_setup import setup_logger
@@ -24,7 +25,7 @@ def process_post(post, posts_collection):
         if title:
             toxicity_result = analyze_toxicity(title + " " + text)
             posts_collection.update_one({"_id": _id}, {"$set": {"toxicity": toxicity_result}})
-            logger.info(f"Updated post {_id} with toxicity: {toxicity_result}")
+            # logger.info(f"Updated post {_id} with toxicity: {toxicity_result}")
     except Exception as e:
         logger.error(f"Failed to process post {_id}: {e}")
 
@@ -36,7 +37,7 @@ def process_comment(comment, comments_collection):
         if text:
             toxicity_result = analyze_toxicity(text)
             comments_collection.update_one({"_id": _id}, {"$set": {"toxicity": toxicity_result}})
-            logger.info(f"Updated comment {_id} with toxicity: {toxicity_result}")
+            # logger.info(f"Updated comment {_id} with toxicity: {toxicity_result}")
     except Exception as e:
         logger.error(f"Failed to process comment {_id}: {e}")
 
@@ -89,4 +90,7 @@ def backfill_toxicity_analysis():
             logger.error(f"Failed to close MongoDB connection: {e}")
 
 if __name__ == "__main__":
-    backfill_toxicity_analysis()
+    while True:
+        backfill_toxicity_analysis()
+        logger.info("Waiting for 1 hour before the next backfill run...")
+        time.sleep(3600)  # Wait for 1 hour (3600 seconds)

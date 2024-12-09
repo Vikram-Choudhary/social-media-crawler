@@ -49,7 +49,7 @@ def handle_fetch_posts(arg=[]):
         except Exception as e:
             logger.error(f"Failed to fetch posts for {subreddit}: {e}")
     produce_faktory_job("handle_fetch_posts", "fetch-posts", 1200, [])
-    backfill_toxicity_analysis()
+    # backfill_toxicity_analysis()
 
 
 def handle_fetch_comments(*pids):
