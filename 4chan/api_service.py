@@ -16,6 +16,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get('/testconnection')
+def testConnections():
+    """
+    Test Connection for API.
+    """
+    test_ok={"status":200}
+    return test_ok
+
 @app.get("/sentiments")
 def get_sentiments():
     """
