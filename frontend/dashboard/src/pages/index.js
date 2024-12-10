@@ -21,8 +21,6 @@ export default function Home() {
           await response.json();
           clearTimeout(timeoutId);
           setConnectionStatus(1);
-        } else {
-          throw new Error("API response not OK");
         }
       } catch (error) {
         if (error.name === "AbortError") {
@@ -45,7 +43,7 @@ export default function Home() {
   const renderContent = () => {
     switch (connectionStatus) {
       case 0:
-        return <div className="error-msg"> <div className="app-loader"><div class="loader"></div>Loading...</div>Checking API connection...</div>;
+        return <div className="error-msg"> <div className="app-loader"><div className="loader"></div>Loading...</div>Checking API connection...</div>;
       case -1:
         return (
           <div className="error-msg">
