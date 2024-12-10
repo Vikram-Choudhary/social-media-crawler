@@ -203,6 +203,13 @@ Run Python scripts in a terminal session that persists even if disconnected or c
    ```
 
 ---
+### Run 4Chan Service API
+   Navigate to the `4chan` folder and activate a virtual environment and run beelow command
+   ```bash
+   uvicorn api_service:app --reload
+   ```
+
+---
 
 ## **References**
 - [4Chan Documentation](https://copeid.ssrc.msstate.edu/wp-content/uploads/2022/06/FINAL-4chan-Documentation.pdf)
