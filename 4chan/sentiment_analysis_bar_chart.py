@@ -108,15 +108,15 @@ def fetch_and_analyze_sentiments():
             thread.join()
 
         logger.info("Sentiment analysis for job market completed successfully.")
-        
-        # Convert to regular dict
-        sentiment_counts = dict(sentiment_counts)
-        # Ensure we have keys for all three sentiments, even if zero
-        for s in ["positive", "neutral", "negative"]:
-            if s not in sentiment_counts:
-                sentiment_counts[s] = 0
-
         return sentiment_counts
+        # # Convert to regular dict
+        # sentiment_counts = dict(sentiment_counts)
+        # # Ensure we have keys for all three sentiments, even if zero
+        # for s in ["positive", "neutral", "negative"]:
+        #     if s not in sentiment_counts:
+        #         sentiment_counts[s] = 0
+
+        # return sentiment_counts
 
     except Exception as e:
         logger.error(f"Error during sentiment analysis: {e}")
