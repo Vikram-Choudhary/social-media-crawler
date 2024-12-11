@@ -1,9 +1,10 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 from sentiment_analysis_bar_chart import fetch_and_analyze_sentiments
 import os
 from dotenv import load_dotenv
+from typing import Optional
 
 load_dotenv()
 
@@ -36,9 +37,9 @@ def testConnections():
         raise HTTPException(status_code=500, detail=f"Database connection failed: {e}")
 
 @app.get("/sentiments")
-def get_sentiments():
-    """
-    Run sentiment analysis and return the counts as JSON.
-    """
-    sentiments = fetch_and_analyze_sentiments()
+def get_sentiments(
+    startDate: Optional[str] = Query(None, description="Start date in ISO format (YYYY-MM-DD)"),
+    endDate: Optional[str] = Query(None, description="End date in ISO format (YYYY-MM-DD)")
+):
+    sentiments = fetch_and_analyze_sentiments(date_from=startDate, date_to=endDate)
     return sentiments

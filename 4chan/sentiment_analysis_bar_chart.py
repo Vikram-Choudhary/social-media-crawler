@@ -6,15 +6,8 @@ from textblob import TextBlob
 from collections import defaultdict
 import matplotlib.pyplot as plt
 from logger_setup import setup_logger
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-
-# MongoDB Configuration
-MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://127.0.0.1:27017")
-DATABASE_NAME = os.getenv("MONGODB_DATABASE_NAME", "jobMarketDB")
-JOB_MARKET_COLLECTION = os.getenv("MONGODB_DB_COLLECTION_NAME", "4chan_posts_comments")
+from datetime import datetime
+import pymongo
 
 # Logger setup
 logger = setup_logger("4chan_sentiment", log_file="logs/4chan_sentiment.log", max_bytes=10*1024*1024, backup_count=5)
@@ -68,10 +61,10 @@ def process_batch(queue, sentiment_counts, lock):
         queue.task_done()
 
 # Main function for sentiment analysis
-def fetch_and_analyze_sentiments():
+def fetch_and_analyze_sentiments(date_from=None, date_to=None):
     try:
-        client = MongoClient(MONGODB_URI)
-        db = client[DATABASE_NAME]
+        client = pymongo.MongoClient("mongodb://vchoudhary:password@127.0.0.1:27017/jobMarketDB")
+        db = client['jobMarketDB']
 
         sentiment_counts = defaultdict(int)  # {sentiment: count}
         lock = threading.Lock()
@@ -85,13 +78,27 @@ def fetch_and_analyze_sentiments():
             threads.append(thread)
 
         # Fetch records in batches from the job market collection
-        collection = db[JOB_MARKET_COLLECTION]
+        collection = db['4chan_posts_comments']
         last_id = None
+        if isinstance(date_from, str):
+            date_from = datetime.fromisoformat(date_from)
+        if isinstance(date_to, str):
+            date_to = datetime.fromisoformat(date_to)
+
+        # Build the date filter query
+        date_filter = {}
+        if date_from:
+            date_filter["$gte"] = date_from.timestamp()
+        if date_to:
+            date_filter["$lte"] = date_to.timestamp()
 
         while True:
             batch_query = {}
             if last_id:
                 batch_query["_id"] = {"$gt": last_id}
+
+            if date_filter:
+                batch_query["timestamp"] = date_filter
 
             records = list(collection.find(batch_query).sort("_id").limit(BATCH_SIZE))
             if not records:
@@ -109,14 +116,6 @@ def fetch_and_analyze_sentiments():
 
         logger.info("Sentiment analysis for job market completed successfully.")
         return sentiment_counts
-        # # Convert to regular dict
-        # sentiment_counts = dict(sentiment_counts)
-        # # Ensure we have keys for all three sentiments, even if zero
-        # for s in ["positive", "neutral", "negative"]:
-        #     if s not in sentiment_counts:
-        #         sentiment_counts[s] = 0
-
-        # return sentiment_counts
 
     except Exception as e:
         logger.error(f"Error during sentiment analysis: {e}")
