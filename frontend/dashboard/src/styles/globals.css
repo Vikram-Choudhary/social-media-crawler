@@ -41,6 +41,10 @@ a {
   }
 }
 
+.p1{
+  padding: 1rem;
+}
+
 .error-msg{
   position: absolute;
   /* border: 1px red dashed; */
@@ -51,11 +55,10 @@ a {
   margin-left: -15%;
 }
 
-/* HTML: <div class="loader"></div> */
-
 .app-loader{
   justify-self: center;
 }
+
 .loader {
   width: 50px;
   aspect-ratio: 1;
@@ -68,3 +71,83 @@ a {
   justify-self: center;
 }
 @keyframes l1 {to{transform: rotate(.5turn)}}
+
+.chart-loader{
+  position: relative;
+  justify-self: center;
+  top: 200px;
+}
+
+.chart-loader-spin {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 5px solid;
+  border-color: #ffffff #0000;
+  animation: l1 1s infinite;
+  position: absolute;
+  bottom: 35px;
+  justify-self: center;
+}
+@keyframes l1 {to{transform: rotate(.5turn)}}
+
+
+.input-date{
+  padding: 5px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #24292e;
+  vertical-align: middle;
+  background-color: #a3a3a3;
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  outline: none;
+  box-shadow: rgba(225, 228, 232, 0.2) 0px 1px 0px 0px inset;
+  :focus{
+      border-color: #0366d6;
+      outline: none;
+      box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+  }
+}
+
+.filter-button {
+  background-color: #EA4C89;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  outline: none;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.filter-button:hover,
+.filter-button:focus {
+  background-color: #F082AC;
+}
+
+.chart-container{display: flex;
+  flex-wrap: wrap;
+}
+.items{
+  flex-basis: 50%;
+  box-sizing: border-box;
+}
