@@ -204,12 +204,58 @@ Run Python scripts in a terminal session that persists even if disconnected or c
 
 ---
 ### Run 4Chan Service API
-   Navigate to the `4chan` folder and activate a virtual environment and run beelow command
+   Navigate to the `4chan` folder and activate a virtual environment and run below command
+   make sure install requirements.txt
+
    ```bash
-   uvicorn api_service:app --reload
+   uvicorn api_service:app --port 8000 --reload
+   ```
+   this will start 4chan api_service at port 8000
+---
+
+---
+### Run Reddit Service API
+   Navigate to the `reddit_v2` folder and activate a virtual environment, now go to `src/`and run below command
+   make sure install requirements.txt
+
+   ```bash
+   uvicorn api_service:app --port 8001 --reload
+   ```
+   this will start reddit api_service at port 8001
+---
+
+### Install Node
+   Install node npm for frontend - React
+   ```bash
+   sudo dpkg --configure -a
+   ```
+
+   ```bash
+   sudo apt install npm
+   ```
+
+   Check Version
+   ```bash
+   npm -version
    ```
 
 ---
+
+## Start React frontend
+
+   Navigate to the `frontend/dashboard` folder run below command to install all node_modules, only need to do this once
+
+   ```bash
+   npm install
+   ```
+
+First, run the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## **References**
 - [4Chan Documentation](https://copeid.ssrc.msstate.edu/wp-content/uploads/2022/06/FINAL-4chan-Documentation.pdf)
