@@ -27,51 +27,39 @@ def chunk_generator(cursor, chunk_size):
     if chunk:
         yield chunk
 
-client = pymongo.MongoClient("mongodb://vchoudhary:password@127.0.0.1:27017/jobMarketDB")
-db = client['jobMarketDB']
-collection = db['reddit_comments']
+def toxicity_data_analysis(subreddit=None):
+    """Main method to handle flow."""
+    # Setup logger
+    logger = setup_logger("reddit_analysis", log_file='logs/reddit_analysis.log', max_bytes=10*1024*1024, backup_count=5)
 
-cursor = collection.find(
-    {"subreddit": {"$ne": "politics"}},
-    {"utc": 1, "toxicity.class": 1}
-)
+    # Setup MongoDB client
+    client = pymongo.MongoClient("mongodb://vchoudhary:password@127.0.0.1:27017/jobMarketDB")
+    db = client['jobMarketDB']
+    collection = db['reddit_comments']
 
-chunk_size = 10000
-data = []
+    # Query setup
+    query = {"subreddit": {"$ne": "politics"}}  # Default query excludes 'politics'
+    if subreddit:
+        query = {"subreddit": subreddit}  # Override query to filter by specific subreddit
 
-with ThreadPoolExecutor() as executor:
-    futures = [executor.submit(process_chunk, chunk) for chunk in chunk_generator(cursor, chunk_size)]
-    for future in futures:
-        data.extend(future.result())
+    cursor = collection.find(
+        query,
+        {"utc": 1, "toxicity.class": 1}
+    )
 
-df = pd.DataFrame(data)
-df["date"] = pd.to_datetime(df["date"])
+    # Process data in chunks
+    chunk_size = 10000
+    data = []
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(process_chunk, chunk) for chunk in chunk_generator(cursor, chunk_size)]
+        for future in futures:
+            data.extend(future.result())
 
-aggregated = df.groupby("date").is_normal.value_counts().unstack(fill_value=0)
-aggregated.rename(columns={True: "Normal", False: "Flagged"}, inplace=True)
+    # Convert to DataFrame and aggregate
+    df = pd.DataFrame(data)
+    df["date"] = pd.to_datetime(df["date"])
 
-# Create subplots
-fig, axes = plt.subplots(2, 1, figsize=(10, 12))
+    aggregated = df.groupby("date").is_normal.value_counts().unstack(fill_value=0)
+    aggregated.rename(columns={True: "Normal", False: "Flagged"}, inplace=True)
 
-# Plot "Flagged Comments"
-axes[0].plot(aggregated.index, aggregated["Flagged"], color="red", label="Flagged Comments")
-axes[0].set_xlabel("Date (ISO 8601)")
-axes[0].set_ylabel("Comment Count")
-axes[0].set_title("Daily Flagged Comment Counts")
-axes[0].legend()
-axes[0].grid(True)
-
-# Plot "Normal Comments"
-axes[1].plot(aggregated.index, aggregated["Normal"], color="blue", label="Normal Comments")
-axes[1].set_xlabel("Date (ISO 8601)")
-axes[1].set_ylabel("Comment Count")
-axes[1].set_title("Daily Normal Comment Counts")
-axes[1].legend()
-axes[1].grid(True)
-
-# Adjust layout and save the figure
-plt.tight_layout()
-plt.savefig('Toxicity_comments_subplots.png')
-plt.show()
-
-print("Plots saved as 'Toxicity_comments_subplots.png'.")
+    return aggregated.to_dict()
