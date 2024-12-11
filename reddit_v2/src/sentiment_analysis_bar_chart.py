@@ -42,7 +42,18 @@ def process_batch(records, sentiments):
 
 
 # Query MongoDB and process data
-def fetch_and_analyze_sentiments():
+def fetch_and_analyze_sentiments(subreddit=None, date_from=None, date_to=None):
+    """
+    Fetch and analyze sentiments from MongoDB based on subreddit and date range filters.
+
+    Args:
+        subreddit (str): Subreddit name to filter (optional).
+        date_from (str): Start date in ISO format (YYYY-MM-DD) (optional).
+        date_to (str): End date in ISO format (YYYY-MM-DD) (optional).
+
+    Returns:
+        list: Analyzed sentiments.
+    """
     try:
         client = MongoClient(MONGODB_URI)
         db = client["jobMarketDB"]
@@ -50,7 +61,17 @@ def fetch_and_analyze_sentiments():
         # Query comments and posts collections
         collections = [COMMENTS_COLLECTION, POSTS_COLLECTION]
         sentiments = []
+        
+        # Construct filter condition
         filter_condition = {"subreddit": {"$ne": "politics"}}
+        if subreddit:
+            filter_condition["subreddit"] = subreddit
+        if date_from or date_to:
+            filter_condition["utc"] = {}
+            if date_from:
+                filter_condition["utc"]["$gte"] = date_from
+            if date_to:
+                filter_condition["utc"]["$lte"] = date_to
 
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             for collection_name in collections:
@@ -72,8 +93,9 @@ def fetch_and_analyze_sentiments():
         return sentiments
 
     except Exception as e:
-        logger.error(f"Error fetching or analyzing sentiments: {e}")
+        logger.error(f"Error fetching and analyzing sentiments: {e}")
         return []
+
 
 # Plot sentiment bar chart
 def plot_sentiment_bar_chart(sentiments):
