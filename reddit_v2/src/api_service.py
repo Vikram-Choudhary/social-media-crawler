@@ -41,4 +41,4 @@ def get_sentiments(
     """
     # Call the fetch_and_analyze_sentiments function with the query parameters
     sentiments = fetch_and_analyze_sentiments(subreddit=subreddit, date_from=from_date, date_to=to_date)
-    return {"sentiments": sentiments}
+    return sentiments

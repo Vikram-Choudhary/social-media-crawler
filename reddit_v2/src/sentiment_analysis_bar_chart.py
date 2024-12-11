@@ -90,7 +90,9 @@ def fetch_and_analyze_sentiments(subreddit=None, date_from=None, date_to=None):
                     executor.submit(process_batch, batch, sentiments)
                     skip += BATCH_SIZE
 
-        return sentiments
+        df = pd.DataFrame(sentiments)
+        sentiment_counts = df.groupby(["subreddit", "sentiment"]).size().unstack(fill_value=0)
+        return sentiment_counts.to_dict()
 
     except Exception as e:
         logger.error(f"Error fetching and analyzing sentiments: {e}")
@@ -121,13 +123,3 @@ def plot_sentiment_bar_chart(sentiments):
 
     except Exception as e:
         logger.error(f"Error while plotting sentiment bar chart: {e}")
-
-# Main execution
-if __name__ == "__main__":
-    logger.info("Starting sentiment analysis for all available data")
-    sentiments = fetch_and_analyze_sentiments()
-
-    if sentiments:
-        plot_sentiment_bar_chart(sentiments)
-    else:
-        logger.warning("No sentiments to plot.")
