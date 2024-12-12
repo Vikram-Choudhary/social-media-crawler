@@ -1,9 +1,9 @@
 # Credits
 
 ## Contributors
-- **Rushikesh Bhadane**: Worked on Temproal Analysis for 4chan and reddit
-- **Vikram Choudhary**: Contributed for data collection andgrpahs for 4chan
-- **Saurabh Patidar**: Contributed for data collection, visualization and grpahs for reddit
+- **Rushikesh Bhadane**: Worked on 4chan APIs
+- **Vikram Choudhary**: Worked on UI
+- **Saurabh Patidar**: Worked on Reddit APIs
 
 ## Third-Party Libraries
 - Matplotlib
@@ -13,4 +13,6 @@
 - TextBlob
 - Queue
 - ThreadPoolExecutor
+- React
+- FastAPI
 
