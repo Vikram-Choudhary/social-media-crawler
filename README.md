@@ -1,14 +1,34 @@
-
 # 4Chan and Reddit Crawler and Analysis
 
 This repository contains tools for crawling and analyzing data from 4Chan and Reddit. Below is the step-by-step guide to set up, run crawlers, and perform analysis.
 
 ---
 
-## **4Chan Crawler**
+## Table of Contents
 
-### **Setup**
+1. [4Chan Crawler](#4chan-crawler)
+   - [Setup](#setup)
+   - [Run Crawler](#run-crawler)
+2. [Reddit Crawler](#reddit-crawler)
+   - [Setup](#setup-1)
+   - [Run Crawler](#run-crawler-1)
+3. [Analysis](#analysis)
+   - [4Chan Analysis](#4chan-analysis)
+   - [Reddit Analysis](#reddit-analysis)
+4. [Using `screen` for Persistent Sessions](#using-screen-for-persistent-sessions)
+5. [Run 4Chan Service API](#run-4chan-service-api)
+6. [Run Reddit Service API](#run-reddit-service-api)
+7. [Start React Frontend](#start-react-frontend)
+8. [References](#references)
+
+---
+
+## 4Chan Crawler
+
+### Setup
+
 1. **Create a `.env` file** in the `4chan/` folder to set up parameters:
+
    ```
    FAKTORY_SERVER_URL=localhost_url
    MONGODB_URI=mongodb_connection_url
@@ -17,21 +37,26 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
    POL_COLLECTION_NAME=4chan_politics_comments
    ```
 
-2. Navigate to the `4chan` folder and create a virtual environment:
+2. **Create a virtual environment** in the `4chan` folder:
+
    ```bash
    python3 -m venv ./env/dev
    ```
 
 3. **Activate the virtual environment:**
+
    ```bash
    source env/dev/bin/activate
    ```
+
    **To deactivate the virtual environment:**
+
    ```bash
    deactivate
    ```
 
 4. **Install dependencies:**
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -47,48 +72,59 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
    /faktory -b :7419 -w :7420
    ```
 
-### **Run Crawler**
-1. Start the 4Chan crawler:
+### Run Crawler
+
+1. **Start the 4Chan crawler:**
+
    ```bash
    python3 chan_crawler.py
    ```
 
-2. Perform a cold start of the 4Chan board crawler:
+2. **Perform a cold start of the 4Chan board crawler:**
+
    ```bash
    python3 cold_start_board.py board_name
    ```
+
    Example: `board_name` can be `/g/` (Technology board) or `/pol/` (Politics board).
 
    **Reference:** [4Chan Boards](https://4chanarchives.com/boards)
 
 ---
 
-## **Reddit Crawler**
+## Reddit Crawler
 
-### **Setup**
-1. Navigate to the `reddit_v2` folder and create a virtual environment:
+### Setup
+
+1. **Create a virtual environment** in the `reddit_v2` folder:
+
    ```bash
    python3 -m venv ./env/dev
    ```
 
 2. **Activate the virtual environment:**
+
    ```bash
    source env/dev/bin/activate
    ```
+
    **To deactivate the virtual environment:**
+
    ```bash
    deactivate
    ```
 
 3. **Install dependencies:**
+
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Ensure Docker is installed and running.
+4. **Ensure Docker is installed and running.**
 
-### **Run Crawler**
-1. Start the Reddit crawler:
+### Run Crawler
+
+1. **Start the Reddit crawler:**
    ```bash
    python3 src/FaktoryService.py
    ```
@@ -96,9 +132,10 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
 
 ---
 
-## **Analysis**
+## Analysis
 
-### **4Chan Analysis**
+### 4Chan Analysis
+
 1. Navigate to the `4chan` folder.
 2. Ensure an `img` folder exists for saving generated images.
 3. Activate the virtual environment and install dependencies (as shown in the setup steps).
@@ -106,16 +143,19 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
 **Run the following scripts for analysis:**
 
 1. **Sentiment Analysis graph:**
+
    ```bash
    python3 sentiment_analysis_bar_chart.py
    ```
 
 2. **Toxicity Class Analysis graph:**
+
    ```bash
    python3 toxicity_class_analysis.py
    ```
 
 3. **Technology board data count graph (`/g` board):**
+
    ```bash
    python3 tech_board_comment.py
    ```
@@ -125,9 +165,8 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
    python3 pol_1_to_14_hourly_comment.py
    ```
 
----
+### Reddit Analysis
 
-### **Reddit Analysis**
 1. Navigate to the `reddit_v2` folder.
 2. Ensure an `img` folder exists for saving generated images.
 3. Activate the virtual environment and install dependencies (as shown in the setup steps).
@@ -135,21 +174,25 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
 **Run the following scripts for analysis:**
 
 1. **Sentiment Analysis graph:**
+
    ```bash
    python3 sentiment_analysis_bar_chart.py
    ```
 
 2. **Toxicity Class Analysis graph:**
+
    ```bash
    python3 toxicity_class_analysis.py
    ```
 
 3. **Subreddit data distribution graph:**
+
    ```bash
    python3 subreddit_data_analysis_horizontal_bar.py
    ```
 
 4. **Daily submissions graph (`r/pol` board):**
+
    ```bash
    python3 pol_1_to_14_daily_posts.py
    ```
@@ -161,38 +204,46 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
 
 ---
 
-## **Using `screen` for Persistent Sessions**
+## Using `screen` for Persistent Sessions
 
 ### Purpose
+
 Run Python scripts in a terminal session that persists even if disconnected or closed.
 
 ### Commands
+
 1. **Install `screen`:**
+
    ```bash
    sudo apt-get install screen
    ```
 
 2. **Start a new session:**
+
    ```bash
    screen -S job_post_crawler
    ```
 
 3. **Run a script within the session:**
+
    ```bash
    python3 job_post_crawler.py
    ```
 
 4. **Detach from the session:**
+
    ```bash
    Ctrl + A, then D
    ```
 
 5. **Reattach to a session:**
+
    ```bash
    screen -r job_post_crawler
    ```
 
 6. **List active sessions:**
+
    ```bash
    screen -ls
    ```
@@ -203,62 +254,51 @@ Run Python scripts in a terminal session that persists even if disconnected or c
    ```
 
 ---
-### Run 4Chan Service API
-   Navigate to the `4chan` folder and activate a virtual environment and run below command
-   make sure install requirements.txt
 
+## Run 4Chan Service API
+
+1. Navigate to the `4chan` folder.
+2. Activate the virtual environment.
+3. Run the following command:
    ```bash
    uvicorn api_service:app --port 8000 --reload
    ```
-   this will start 4chan api_service at port 8000
----
+   This will start the 4Chan API service at port 8000.
 
 ---
-### Run Reddit Service API
-   Navigate to the `reddit_v2` folder and activate a virtual environment, now go to `src/`and run below command
-   make sure install requirements.txt
 
+## Run Reddit Service API
+
+1. Navigate to the `reddit_v2` folder.
+2. Activate the virtual environment.
+3. Navigate to the `src/` folder and run the following command:
    ```bash
    uvicorn api_service:app --port 8001 --reload
    ```
-   this will start reddit api_service at port 8001
----
-
-### Install Node
-   Install node npm for frontend - React
-   ```bash
-   sudo dpkg --configure -a
-   ```
-
-   ```bash
-   sudo apt install npm
-   ```
-
-   Check Version
-   ```bash
-   npm -version
-   ```
+   This will start the Reddit API service at port 8001.
 
 ---
 
-## Start React frontend
+## Start React Frontend
 
-   Navigate to the `frontend/dashboard` folder run below command to install all node_modules, only need to do this once
+1. Navigate to the `frontend/dashboard` folder.
+2. Run the following command to install all `node_modules` (only needed once):
 
    ```bash
    npm install
    ```
 
-First, run the development server:
+3. Start the development server:
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to view the result.
 
-## **References**
+---
+
+## References
+
 - [4Chan Documentation](https://copeid.ssrc.msstate.edu/wp-content/uploads/2022/06/FINAL-4chan-Documentation.pdf)
 - [4Chan API](https://github.com/4chan/4chan-API/blob/master/pages/Threads.md)
-
---- 
