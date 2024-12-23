@@ -8,9 +8,9 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
 
 | Phase       | Description                                        |
 | ----------- | -------------------------------------------------- |
-| [Phase 1]() | Data Collection and Storage                        |
-| [Phase 2]() | Cleaning and Analyzing data                        |
-| [Phase 3]() | Generating statistical models and analyzing trends |
+| [Phase 1](https://github.com/Vikram-Choudhary/social-media-crawler/blob/main/reports/Report1_Data_Collection_Storage.pdf) | Data Collection and Storage                        |
+| [Phase 2](https://github.com/Vikram-Choudhary/social-media-crawler/blob/main/reports/Report2_Cleaning_Analyzing_Data.pdf) | Cleaning and Analyzing data                        |
+| [Phase 3](https://github.com/Vikram-Choudhary/social-media-crawler/blob/main/reports/Report3_Final_Data_Analysis.pdf) | Generating sentiment analysis, toxicity classification, and data trends |
 
 ---
 
