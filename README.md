@@ -23,6 +23,16 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
 
 ---
 
+## Project Structure
+
+| Phase | Description |
+| ------ | ------ |
+| [Phase 1]() | Data Collection and Storage |
+| [Phase 2]() | Cleaning and Analyzing data |
+| [Phase 3]() | Generating statistical models and analyzing trends |
+
+---
+
 ## 4Chan Crawler
 
 ### Setup
