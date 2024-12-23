@@ -4,6 +4,16 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
 
 ---
 
+## Project Structure
+
+| Phase       | Description                                        |
+| ----------- | -------------------------------------------------- |
+| [Phase 1]() | Data Collection and Storage                        |
+| [Phase 2]() | Cleaning and Analyzing data                        |
+| [Phase 3]() | Generating statistical models and analyzing trends |
+
+---
+
 ## Table of Contents
 
 1. [4Chan Crawler](#4chan-crawler)
@@ -20,16 +30,6 @@ This repository contains tools for crawling and analyzing data from 4Chan and Re
 6. [Run Reddit Service API](#run-reddit-service-api)
 7. [Start React Frontend](#start-react-frontend)
 8. [References](#references)
-
----
-
-## Project Structure
-
-| Phase | Description |
-| ------ | ------ |
-| [Phase 1]() | Data Collection and Storage |
-| [Phase 2]() | Cleaning and Analyzing data |
-| [Phase 3]() | Generating statistical models and analyzing trends |
 
 ---
 
